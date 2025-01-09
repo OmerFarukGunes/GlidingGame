@@ -8,6 +8,12 @@ public class Stick : CustomBehaviour
     {
         base.Initialize();
         ListenActions();
+        SetCamera();
+    }
+    private void SetCamera()
+    {
+        CameraManager.Instance.AssignTarget(transform);
+        CameraManager.Instance.ChangeCameraProps(CameraStates.InStick);
     }
     private void ListenActions()
     {
@@ -23,13 +29,25 @@ public class Stick : CustomBehaviour
     {
         Vector3 mouseDelta = touchPos - mLastMousePosition;
         mLastMousePosition = touchPos;
+
         mAnimationProgress -= mouseDelta.x * Time.deltaTime * mAnimSensivity;
         mAnimationProgress = Mathf.Clamp01(mAnimationProgress);
+
         Animator.Play(StickAnimatorParams.BendAnimName, 0, mAnimationProgress);
     }
     private void OnTouchEnd(Vector3 touchPos)
     {
+        GameManager.Launch(mAnimationProgress);
+
         Animator.SetTrigger(StickAnimatorParams.ReleaseTrigger);
         mAnimationProgress = 0;
+
+        DeListenActions();
+    }
+    private void DeListenActions()
+    {
+        InputManager.OnTouchMove -= OnTouchMove;
+        InputManager.OnTouchStart -= OnTouchStart;
+        InputManager.OnTouchEnd -= OnTouchEnd;
     }
 }

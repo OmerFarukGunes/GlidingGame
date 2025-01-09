@@ -1,6 +1,7 @@
 public class Constants
 {
-
+    public const string CAMERA_TWEEN_ID = "CameraTweenID";
+    public const string ROCKETMAN_TWEEN_ID = "RocketmanTweenID";
 }
 public enum CameraStates
 {
@@ -11,7 +12,7 @@ public enum PlayerStates
 {
     InStick,
     InAir,
-    OnControlInAir,
+    InGliding,
     Fall,
 }
 public class StickAnimatorParams

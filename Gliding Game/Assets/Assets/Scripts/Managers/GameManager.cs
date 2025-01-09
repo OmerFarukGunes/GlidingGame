@@ -6,6 +6,7 @@ public class GameManager : Singleton<GameManager>
     public static event Action OnLevelFailed;
     public static event Action OnLevelLoaded;
     public static event Action OnLevelRestarted;
+    public static event Action<float> OnLaunched;
 
     [SerializeField] private Transform managers;
     protected override void Awake()
@@ -21,4 +22,5 @@ public class GameManager : Singleton<GameManager>
     public static void LevelLoaded() => OnLevelLoaded?.Invoke();
     public static void LevelFailed() => OnLevelFailed?.Invoke();
     public static void LevelRestarted() => OnLevelRestarted?.Invoke();
+    public static void Launch(float pullAmount) => OnLaunched?.Invoke(pullAmount);
 }

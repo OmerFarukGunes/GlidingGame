@@ -1,4 +1,5 @@
 using Cinemachine;
+using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,10 +20,16 @@ public class CameraManager : Singleton<CameraManager>
     }
     public void AssignTarget(Transform target)
     {
-
+      currentCamera.Follow = target;
     }
-    public void ChangeCameraProps(CameraState state)
+    public void ChangeCameraProps(CameraStates state)
     {
-
+        DOTween.Kill(GetInstanceID());
+        Vector3 currentVector = mCurrentTransposer.m_FollowOffset;
+        DOTween.To(() => currentVector, x => currentVector = x, cameraProperties[(int)state].FollowOffset, .5f).OnUpdate(() =>
+        {
+            mCurrentTransposer.m_FollowOffset = currentVector;
+        }).SetId(Constants.CAMERA_TWEEN_ID);
+        currentCamera.transform.DORotate(cameraProperties[(int)state].Rotation,.5f).SetId(Constants.CAMERA_TWEEN_ID);
     }
 }
