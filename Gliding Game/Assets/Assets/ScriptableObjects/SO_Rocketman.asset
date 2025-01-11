@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2cfc2d83036b7740a8a143f530b8399, type: 3}
-  m_Name: Rocketman
+  m_Name: SO_Rocketman
   m_EditorClassIdentifier: 
   Gravity: -9.81
-  LaunchPowerMultiplier: 30
-  RotationSpeed: 360
-  ForwardSpeed: 20
-  GlideSpeed: 1
-  GlideGravity: -2
+  LaunchPowerMultiplier: 10
+  RotationSpeed: 720
+  ForwardSpeed: 10
+  GlideSpeed: 0.5
+  GlideGravity: -1

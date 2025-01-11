@@ -37,8 +37,12 @@ public class Stick : CustomBehaviour
     }
     private void OnTouchEnd(Vector3 touchPos)
     {
+        if (mAnimationProgress < .1f)
+        {
+            Animator.SetTrigger(Constants.IDLE);
+            return;
+        }
         GameManager.Launch(mAnimationProgress);
-
         Animator.SetTrigger(StickAnimatorParams.ReleaseTrigger);
         mAnimationProgress = 0;
 
