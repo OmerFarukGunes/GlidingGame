@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-
-
 public class StateMachine
 {
     private Rocketman mRocketman;
@@ -40,12 +38,10 @@ public class StateMachine
     {
         mCurrentState.Enter();
     }
-
     public void Execute()
     {
         mCurrentState.Execute();
     }
-
     public void Exit()
     {
         mCurrentState.Exit();

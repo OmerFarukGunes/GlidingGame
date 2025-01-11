@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class FlyState : IState
 {
     private StateMachine mStatemachine;
@@ -13,7 +12,6 @@ public class FlyState : IState
     {
         InputManager.OnTouchStart += mRocketman.OnTouchStart;
     }
-
     public void Execute()
     {
         Fly();

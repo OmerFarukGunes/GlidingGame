@@ -14,7 +14,7 @@ public class PlayerManager : Singleton<PlayerManager>
     }
     public int GetCurrentScore()
     {
-        return (int)Rocketman.transform.position.z;
+        return (int)(Rocketman.transform.position.z < 0 ? 0 : Rocketman.transform.position.z);
     }
     public int GetBestScore()
     {

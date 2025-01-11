@@ -21,7 +21,7 @@ public class LevelManager : Singleton<LevelManager>
     }
     private void InitGrounds()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < Constants.INIT_PLANE_COUNT; i++)
         {
             SpawnGround();
         }

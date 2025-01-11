@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class FallState : IState
 {
     private StateMachine mStatemachine;
@@ -17,10 +14,9 @@ public class FallState : IState
         GameManager.OnLevelRestarted += OnLevelRestarted;
         mRocketman.Animator.SetTrigger(Constants.IDLE);
     }
-
     public void Execute()
     {
-        if (mRocketman.Velocity.magnitude < mRocketman.RocketmanData.MinBounceSpeed)
+        if (mRocketman.Velocity.magnitude < mRocketman.RocketmanData.MinBounceSpeed || mRocketman.transform.position.y < Constants.MIN_Y_LIMIT)
         {
             mRocketman.Collider.enabled = false;
             mRocketman.Velocity = Vector3.zero;
@@ -28,7 +24,7 @@ public class FallState : IState
         }
         else if (mRocketman.CanRotate)
         {
-            mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * 20  * Time.deltaTime, Space.Self);
+            mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * mRocketman.RocketmanData.FallRotationSpeed  * Time.deltaTime, Space.Self);
             mRocketman.Velocity -= mRocketman.Velocity * .1f * Time.deltaTime;
         }
 

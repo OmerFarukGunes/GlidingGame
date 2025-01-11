@@ -1,8 +1,5 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class GlidingState : IState
 {
     private StateMachine mStatemachine;
@@ -34,6 +31,7 @@ public class GlidingState : IState
     }
     public void Exit()
     {
+        mRocketman.Animator.Play("Anim_CloseWings", 0, 1 - mRocketman.GetAnimCurrentTime());
         InputManager.OnTouchEnd -= OnTouchEnd;
         InputManager.OnTouchMove -= OnTouchMove;
 
@@ -48,8 +46,6 @@ public class GlidingState : IState
     {
         mRocketman.Velocity.y = 0;
 
-        mRocketman.Animator.Play("Anim_CloseWings", 0, 1 - mRocketman.GetAnimCurrentTime());
-
         mRocketman.CanRotate = false;
         mRocketman.transform.DORotate(new Vector3(90, 0, 0), .1f).OnComplete(() => mRocketman.CanRotate = true).SetId(Constants.ROCKETMAN_TWEEN_ID);
 
@@ -60,8 +56,8 @@ public class GlidingState : IState
         Vector3 deltaPos = touchpos - mRocketman.LastTouchPos;
         Vector3 displacement = new Vector3(deltaPos.x * mRocketman.RocketmanData.GlideSwipeSpeed, mRocketman.RocketmanData.GlideGravity, mRocketman.Velocity.z);
         mRocketman.transform.position += displacement * Time.deltaTime;
-        float clampedRotation = Mathf.Clamp(displacement.x, -30, 30);
 
+        float clampedRotation = Mathf.Clamp(displacement.x, -30, 30);
         Quaternion rotation = Quaternion.Euler(Mathf.Clamp(90+clampedRotation,60,120), 90, 90);
         mRocketman.transform.rotation = Quaternion.Lerp(mRocketman.transform.rotation, rotation, Time.deltaTime * 5);
     }

@@ -1,14 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
 public class RandomPointGenerator : MonoBehaviour
 {
     [SerializeField] private Vector2 xPosLimits;
     [SerializeField] private Vector2 zPosLimits;
+
     [SerializeField] private int pointCount;
     [SerializeField] private float minDistance;
+
     public List<Vector3> PositionList = new List<Vector3>();
 
     [ContextMenu("Generate Random Positions")]
@@ -40,14 +40,10 @@ public class RandomPointGenerator : MonoBehaviour
             {
                 PositionList.Add(randomPosition);
             }
-
-            foreach (var pos in PositionList)
-            {
-                Debug.DrawLine(pos, pos + Vector3.up * 5, Color.red, 10f);
-            }
         }
     }
 }
+#if UNITY_EDITOR
 [CustomEditor(typeof(RandomPointGenerator))]
 public class RandomPositionGeneratorEditor : Editor
 {
@@ -62,3 +58,4 @@ public class RandomPositionGeneratorEditor : Editor
         }
     }
 }
+#endif

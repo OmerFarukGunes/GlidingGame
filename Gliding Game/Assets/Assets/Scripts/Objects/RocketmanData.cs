@@ -18,6 +18,7 @@ public class RocketmanData : ScriptableObject
     public float GlideForwardSpeed = 10;
 
     public float RotationSpeed = 360f;
+    public float FallRotationSpeed = 20;
 
     public float GlideSwipeSpeed = 5f;
 }

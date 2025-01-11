@@ -16,17 +16,17 @@ RenderSettings:
   serializedVersion: 9
   m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 2
+  m_FogMode: 3
   m_FogDensity: 0.001
   m_LinearFogStart: 0
-  m_LinearFogEnd: 300
+  m_LinearFogEnd: 900
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 0ff23603c187cd146bc65bf76e851175, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8c7391534baeeb746a3cac349f396f4a, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -387,8 +387,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.94509804, b: 0.79607844, a: 1}
-  m_Intensity: 0.9
+  m_Color: {r: 1, g: 0.9607843, b: 0.85490197, a: 1}
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -427,7 +427,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1150,14 +1150,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6394201269200805259, guid: 8fbb125c3cd313d46917bbfe428616ee, type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6394201269200805259, guid: 8fbb125c3cd313d46917bbfe428616ee, type: 3}
-      propertyPath: m_BlocksRaycasts
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6797818243546413837, guid: 8fbb125c3cd313d46917bbfe428616ee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1204,27 +1196,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6481876061532952, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6481876061532952, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6481876061532952, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 85.78
       objectReference: {fileID: 0}
     - target: {fileID: 6481876061532952, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 342.11
       objectReference: {fileID: 0}
     - target: {fileID: 6481876061532952, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 4448472514117489076, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 395
       objectReference: {fileID: 0}
     - target: {fileID: 4540141194525296640, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_Pivot.x
@@ -1312,7 +1304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4695476142895485630, guid: 83a5d4cf5fa943a418c4bf7a743e86ae, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

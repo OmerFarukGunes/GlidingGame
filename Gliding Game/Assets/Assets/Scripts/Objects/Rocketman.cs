@@ -18,25 +18,22 @@ public class Rocketman : CustomBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
         if (collision.transform.CompareTag(TAGS.GROUND))
         {
-            PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
             BounceOffGround(collision.contacts[0].normal);
         }
         else if (!StateMachine.CheckCurrentState(RocketmanStates.Fall))
         {
             if (collision.transform.CompareTag(TAGS.DOUBLE_JUMPER))
             {
-                PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
                 HitJumper(Vector3.up, RocketmanData.JumperPower * 2);
             }
             else if (collision.transform.CompareTag(TAGS.JUMPER))
             {
-                PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
                 HitJumper(Vector3.up, RocketmanData.JumperPower);
             }
         }
-     
     }
     private void BounceOffGround(Vector3 collisionNormal)
     {

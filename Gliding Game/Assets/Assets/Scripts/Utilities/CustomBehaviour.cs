@@ -3,7 +3,9 @@ public class CustomBehaviour : MonoBehaviour
 {
     public virtual void Initialize()
     {
+
     }
+
     private Animator mAnimator;
     public Animator Animator
     {
@@ -16,6 +18,7 @@ public class CustomBehaviour : MonoBehaviour
             return mAnimator;
         }
     } 
+
     private Collider mCollider;
     public Collider Collider
     {
@@ -28,7 +31,7 @@ public class CustomBehaviour : MonoBehaviour
             return mCollider;
         }
     } 
-    
+
     private CanvasGroup mCanvasGroup;
     public CanvasGroup CanvasGroup
     {

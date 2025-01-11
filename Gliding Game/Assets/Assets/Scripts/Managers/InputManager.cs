@@ -51,6 +51,7 @@ public class InputManager : Singleton<InputManager>
                 TouchStart(pos);
                 break;
             case TouchPhase.Moved:
+            case TouchPhase.Stationary:
                 TouchMove(pos);
                 break;
             case TouchPhase.Ended:

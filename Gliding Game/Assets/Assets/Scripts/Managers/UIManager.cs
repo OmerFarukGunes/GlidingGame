@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private List<UIPanel> uIPanelList;
@@ -10,10 +7,7 @@ public class UIManager : Singleton<UIManager>
     public override void Initialize()
     {
         base.Initialize();
-        uIPanelList.ForEach(x =>
-        {
-            x.Initialize();
-        });
+        uIPanelList.ForEach(x => x.Initialize());
         GetPanel<HudPanel>().ShowPanel();
         GameManager.OnLevelFailed += OnLevelFailed;
     }
@@ -27,7 +21,6 @@ public class UIManager : Singleton<UIManager>
         {
             if (item.GetType() == typeof(T)) return (T)item;
         }
-
         return null;
     }
     private void OnLevelFailed() 
