@@ -18,7 +18,7 @@ public enum CameraStates
 }
 public enum RocketmanStates
 {
-    InStick,
+    Idle,
     Fly,
     Gliding,
     Fall,

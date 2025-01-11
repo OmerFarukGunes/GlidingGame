@@ -9,8 +9,7 @@ public class Ground : PoolObject
     {
         if (other.CompareTag(TAGS.PLAYER))
         {
-            PoolManager.Instance.DeSpawn(this);
-            LevelManager.Instance.SpawnGround();
+            LevelManager.Instance.RemoveGroundInList(this);
         }
     }
     public void SpawnJumpers()

@@ -16,6 +16,13 @@ public class GameManager : Singleton<GameManager>
         base.Awake();
         InitializeManagers();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            LevelRestarted();
+        }
+    }
     private void InitializeManagers()
     {
         managers.GetComponentsInChildren<CustomBehaviour>().ToList().ForEach(manager => manager.Initialize());

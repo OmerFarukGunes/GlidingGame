@@ -8,20 +8,21 @@ public class Stick : CustomBehaviour
     public override void Initialize()
     {
         base.Initialize();
-        ListenActions();
+        ListenInputActions();
         SetCamera();
+        GameManager.OnGetRocketmanParent += OnGetRocketmanParent;
+        GameManager.OnLevelRestarted += OnLevelRestarted;
     }
     private void SetCamera()
     {
         CameraManager.Instance.AssignTarget(transform);
         CameraManager.Instance.ChangeCameraProps(CameraStates.InStick);
     }
-    private void ListenActions()
+    private void ListenInputActions()
     {
         InputManager.OnTouchMove += OnTouchMove;
         InputManager.OnTouchStart += OnTouchStart;
         InputManager.OnTouchEnd += OnTouchEnd;
-        GameManager.OnGetRocketmanParent += OnGetRocketmanParent;
     }
     private void OnTouchStart(Vector3 touchPos)
     {
@@ -48,16 +49,27 @@ public class Stick : CustomBehaviour
         Animator.SetTrigger(StickAnimatorParams.ReleaseTrigger);
         mAnimationProgress = 0;
 
-        DeListenActions();
+        DeListenInputActions();
     }
     private Transform OnGetRocketmanParent()
     {
         return rocketmanParent;
     }
-    private void DeListenActions()
+    private void OnLevelRestarted()
+    {
+        ListenInputActions();
+        SetCamera();
+    }
+    private void DeListenInputActions()
     {
         InputManager.OnTouchMove -= OnTouchMove;
         InputManager.OnTouchStart -= OnTouchStart;
         InputManager.OnTouchEnd -= OnTouchEnd;
+    }
+    private void OnDestroy()
+    {
+        DeListenInputActions();
+        GameManager.OnGetRocketmanParent -= OnGetRocketmanParent;
+        GameManager.OnLevelRestarted -= OnLevelRestarted;
     }
 }

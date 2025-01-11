@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private string sceneName;
+    private List<Ground> mGroundList = new List<Ground>();
     private int mGroundCount;
     public override void Initialize()
     {
         base.Initialize();
+        GameManager.OnLevelRestarted += OnLevelRestarted;
         LoadLevel();
     }
     private void LoadLevel()
@@ -33,11 +35,24 @@ public class LevelManager : Singleton<LevelManager>
 
         GameManager.LevelLoaded();
     }
+    public void RemoveGroundInList(Ground ground)
+    {
+        mGroundList.Remove(ground);
+        PoolManager.Instance.DeSpawn(ground);
+        SpawnGround();
+    }
     public void SpawnGround()
     {
-        var ground = PoolManager.Instance.Spawn(PoolObjectType.Ground, null);
-        ground.transform.position = Vector3.forward * mGroundCount * ground.transform.GetChild(0).localScale.z * 10; // Plane default width is 10
-        (ground as Ground).SpawnJumpers();
+        mGroundList.Add(PoolManager.Instance.Spawn(PoolObjectType.Ground, null) as Ground);
+        mGroundList[^1].transform.position = Vector3.forward * mGroundCount * mGroundList[^1].transform.GetChild(0).localScale.z * 10; // Plane default width is 10
+        mGroundList[^1].SpawnJumpers();
         mGroundCount++;
+    }
+    private void OnLevelRestarted()
+    {
+        mGroundCount = 0;
+        mGroundList.ForEach(x => PoolManager.Instance.DeSpawn(x));
+        mGroundList.Clear();
+        InitGrounds();
     }
 }

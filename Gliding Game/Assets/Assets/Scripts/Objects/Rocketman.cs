@@ -1,14 +1,12 @@
 using UnityEngine;
-
 public class Rocketman : CustomBehaviour
 {
-     public Vector3 Velocity;
     [HideInInspector] public bool CanRotate;
+    [HideInInspector] public Vector3 Velocity;
     public Vector3 LastTouchPos{ get; private set; }
+    public Vector3 RotateAxis{ get; private set; }
     public StateMachine StateMachine { get; private set; }
-
     public RocketmanData RocketmanData;
-
     public override void Initialize()
     {
         base.Initialize();
@@ -34,17 +32,22 @@ public class Rocketman : CustomBehaviour
         }
      
     }
+    private void Fall()
+    {
+        RotateAxis = Vector3.Cross(Velocity.normalized, Vector3.forward).normalized;
+        StateMachine.ChangeStateTo(RocketmanStates.Fall);
+    }
     private void BounceOffGround(Vector3 collisionNormal)
     {
         Vector3 bounceDirection = Vector3.Reflect(Velocity.normalized, collisionNormal);
         Velocity = bounceDirection * Velocity.magnitude * RocketmanData.BounceDamping;
-        StateMachine.ChangeStateTo(RocketmanStates.Fall);
+        Fall();
     }
     private void HitJumper(Vector3 direction, float power)
     {
         Velocity.y = 0;
         Velocity += direction * power;
-        StateMachine.ChangeStateTo(RocketmanStates.Fall);
+        StateMachine.ChangeStateTo(RocketmanStates.Fly);
     }
     private void Update()
     {
@@ -53,11 +56,15 @@ public class Rocketman : CustomBehaviour
     public void OnLaunched(float pullAmount)
     {
         SetCamera();
-        float power = pullAmount * RocketmanData.LaunchPowerMultiplier;
+
+        RotateAxis = Vector3.right;
         transform.parent = null;
+
+        float power = pullAmount * RocketmanData.LaunchPowerMultiplier;
         Vector3 avarageForward = (Vector3.forward + transform.forward).normalized;
         Velocity = avarageForward * power;
         Velocity.z = Mathf.Abs(Velocity.z * RocketmanData.ForwardSpeedMultiplier);
+
         StateMachine.ChangeStateTo(RocketmanStates.Fly);
     }
     public void OnTouchStart(Vector3 touchPos)
@@ -74,9 +81,5 @@ public class Rocketman : CustomBehaviour
     {
         CameraManager.Instance.AssignTarget(transform);
         CameraManager.Instance.ChangeCameraProps(CameraStates.OnFly);
-    }
-    private void OnDestroy()
-    {
-
     }
 }

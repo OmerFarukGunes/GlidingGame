@@ -13,12 +13,16 @@ public class FallState : IState
     }
     public void Enter()
     {
-
+        GameManager.LevelFailed();
+        GameManager.OnLevelRestarted += OnLevelRestarted;
         mRocketman.Animator.SetTrigger(Constants.IDLE);
     }
 
     public void Execute()
     {
+        if (mRocketman.transform.position.y <= 0)
+            return;
+
         mStatemachine.GetRocketman().Velocity.y += mStatemachine.GetRocketman().RocketmanData.Gravity * Time.deltaTime;
         mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
 
@@ -28,18 +32,17 @@ public class FallState : IState
         }
         else if (mRocketman.CanRotate)
         {
-            mRocketman.transform.Rotate(-mRocketman.Velocity, mRocketman.RocketmanData.RotationSpeed * Time.deltaTime, Space.Self);
+            mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * 20  * Time.deltaTime, Space.Self);
             mRocketman.Velocity -= mRocketman.Velocity * .1f * Time.deltaTime;
         }
     }
 
     public void Exit()
     {
-   
+        GameManager.OnLevelRestarted -= OnLevelRestarted;
     }
-
-    public void OnEvent()
+    private void OnLevelRestarted()
     {
-    
+        mStatemachine.ChangeStateTo(RocketmanStates.Idle);
     }
 }
