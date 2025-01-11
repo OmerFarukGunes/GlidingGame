@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 183269586208854629}
   m_Layer: 0
   m_Name: P_Rocketman
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -228,7 +228,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 043a9c638adf58b42a9528122f474b0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 11400000, guid: 2a4b3139f98473a4881665b346024a06, type: 2}
+  LastTouchPos: {x: 0, y: 0, z: 0}
+  Velocity: {x: 0, y: 0, z: 0}
+  CanRotate: 0
+  RocketmanData: {fileID: 11400000, guid: 2a4b3139f98473a4881665b346024a06, type: 2}
 --- !u!135 &4327134444783057364
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -5,6 +5,14 @@ public class Ground : PoolObject
 {
     [SerializeField] private RandomPointGenerator randomPointGenerator;
     private List<PoolObject> mSpawnedJumperList = new List<PoolObject>();
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(TAGS.PLAYER))
+        {
+            PoolManager.Instance.DeSpawn(this);
+            LevelManager.Instance.SpawnGround();
+        }
+    }
     public void SpawnJumpers()
     {
         int count = Random.Range(10, 15);
@@ -18,10 +26,7 @@ public class Ground : PoolObject
     }
     public override void OnDespawn()
     {
-        foreach (var obj in mSpawnedJumperList)
-        {
-            PoolManager.Instance.DeSpawn(obj);
-        }
+        mSpawnedJumperList.ForEach(jumper => PoolManager.Instance.DeSpawn(jumper));
         mSpawnedJumperList.Clear();
     }
     public override void OnSpawn()

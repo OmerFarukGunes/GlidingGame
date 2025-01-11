@@ -1,6 +1,7 @@
 using UnityEngine;
 public class Stick : CustomBehaviour
 {
+    [SerializeField] private Transform rocketmanParent;
     private float mAnimSensivity = 0.1f;
     private float mAnimationProgress = 0f;
     private Vector3 mLastMousePosition;
@@ -20,6 +21,7 @@ public class Stick : CustomBehaviour
         InputManager.OnTouchMove += OnTouchMove;
         InputManager.OnTouchStart += OnTouchStart;
         InputManager.OnTouchEnd += OnTouchEnd;
+        GameManager.OnGetRocketmanParent += OnGetRocketmanParent;
     }
     private void OnTouchStart(Vector3 touchPos)
     {
@@ -47,6 +49,10 @@ public class Stick : CustomBehaviour
         mAnimationProgress = 0;
 
         DeListenActions();
+    }
+    private Transform OnGetRocketmanParent()
+    {
+        return rocketmanParent;
     }
     private void DeListenActions()
     {

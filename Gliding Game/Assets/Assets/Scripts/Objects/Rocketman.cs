@@ -1,120 +1,82 @@
-using DG.Tweening;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Rocketman : CustomBehaviour
 {
-    [SerializeField] private Player player;
-    private float mPassedTime;
-    private PlayerStates mPlayerState;
-    private Vector3 mVelocity;
-    private Vector3 mLastTouchPos;
-    private bool mCanRotateAround = true;
+     public Vector3 Velocity;
+    [HideInInspector] public bool CanRotate;
+    public Vector3 LastTouchPos{ get; private set; }
+    public StateMachine StateMachine { get; private set; }
+
+    public RocketmanData RocketmanData;
+
     public override void Initialize()
     {
         base.Initialize();
-        GameManager.OnLaunched += OnLaunched;
+        StateMachine = new StateMachine(this);
+
     }
-    private void ListenActions()
+    private void OnCollisionEnter(Collision collision)
     {
-        InputManager.OnTouchMove += OnTouchMove;
-        InputManager.OnTouchStart += OnTouchStart;
-        InputManager.OnTouchEnd += OnTouchEnd;
+        if (collision.transform.CompareTag(TAGS.GROUND))
+        {
+            BounceOffGround(collision.contacts[0].normal);
+        }
+        else if (!StateMachine.CheckCurrentState(RocketmanStates.Fall))
+        {
+            if (collision.transform.CompareTag(TAGS.DOUBLE_JUMPER))
+            {
+                HitJumper(Vector3.up, RocketmanData.JumperPower * 2);
+            }
+            else if (collision.transform.CompareTag(TAGS.JUMPER))
+            {
+                HitJumper(Vector3.up, RocketmanData.JumperPower);
+            }
+        }
+     
+    }
+    private void BounceOffGround(Vector3 collisionNormal)
+    {
+        Vector3 bounceDirection = Vector3.Reflect(Velocity.normalized, collisionNormal);
+        Velocity = bounceDirection * Velocity.magnitude * RocketmanData.BounceDamping;
+        StateMachine.ChangeStateTo(RocketmanStates.Fall);
+    }
+    private void HitJumper(Vector3 direction, float power)
+    {
+        Velocity.y = 0;
+        Velocity += direction * power;
+        StateMachine.ChangeStateTo(RocketmanStates.Fall);
     }
     private void Update()
     {
-        if (mPlayerState == PlayerStates.Launched || mPlayerState == PlayerStates.AfterGliding)
-            Flying();
+        StateMachine.Execute();
     }
-    private void Flying()
+    public void OnLaunched(float pullAmount)
     {
-        mPassedTime += Time.deltaTime;
-
-        Vector3 displacement = Vector3.zero;
-
-        if (mPlayerState == PlayerStates.Launched)
-            displacement = new Vector3(mVelocity.x, (mVelocity.y * mPassedTime) + (.5f * player.Gravity * Mathf.Pow(mPassedTime, 2)), mVelocity.z); 
-        else
-            displacement = new Vector3(mVelocity.x, player.Gravity * mPassedTime, mVelocity.z);
-
-        transform.position += displacement * Time.deltaTime;
-
-        if (mCanRotateAround)
-            transform.Rotate(Vector3.right, player.RotationSpeed * Time.deltaTime, Space.Self);
-    }
-    private void Gliding(Vector3 deltaPos)
-    {
-        Vector3 displacement = new Vector3(deltaPos.x * player.GlideSpeed, player.GlideGravity, mVelocity.z);
-        transform.position += displacement * Time.deltaTime;
-
-        float clampedRotation = Mathf.Clamp(transform.rotation.z - displacement.x, -30, 30);
-        Quaternion rotation = Quaternion.Euler(60, 0, clampedRotation);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * 5);
-    }
-    private void StartGliding()
-    {
-        DOTween.Kill(Constants.ROCKETMAN_TWEEN_ID);
-        mPlayerState = PlayerStates.InGliding;
-
-        Animator.Play("Anim_OpenWings", 0, 1 - GetAnimCurrentTime());
-    }
-    private void StopGliding()
-    {
-        mPassedTime = 0;
-        mPassedTime += Time.deltaTime;
-        mPlayerState = PlayerStates.AfterGliding;
-
-        Animator.Play("Anim_CloseWings", 0, 1 - GetAnimCurrentTime());
-
-        mCanRotateAround = false;
-        transform.DORotate(new Vector3(60, 0, 0), .1f).OnComplete(() => mCanRotateAround = true).SetId(Constants.ROCKETMAN_TWEEN_ID);
-    }
-  
-    private void OnLaunched(float pullAmount)
-    {
-        GameManager.OnLaunched -= OnLaunched;
         SetCamera();
-
-        float power = pullAmount * player.LaunchPowerMultiplier;
+        float power = pullAmount * RocketmanData.LaunchPowerMultiplier;
         transform.parent = null;
-
         Vector3 avarageForward = (Vector3.forward + transform.forward).normalized;
-        Debug.DrawRay(transform.position, avarageForward * 5, Color.green);
-        mVelocity = avarageForward * power;
-        mVelocity.z = Mathf.Abs(mVelocity.z * player.ForwardSpeed);
-        Debug.Log(mVelocity);
-        mPassedTime = 0;
-        mPlayerState = PlayerStates.Launched;
-
-        ListenActions();
+        Velocity = avarageForward * power;
+        Velocity.z = Mathf.Abs(Velocity.z * RocketmanData.ForwardSpeedMultiplier);
+        StateMachine.ChangeStateTo(RocketmanStates.Fly);
     }
-    private void OnTouchStart(Vector3 touchPos)
+    public void OnTouchStart(Vector3 touchPos)
     {
-        mLastTouchPos = touchPos;
-        StartGliding();
+        LastTouchPos = touchPos;
+        StateMachine.ChangeStateTo(RocketmanStates.Gliding);
     }
-    private void OnTouchMove(Vector3 touchPos)
-    {
-        Gliding(touchPos - mLastTouchPos);
-    }
-    private void OnTouchEnd(Vector3 touchPos)
-    {
-        StopGliding();
-    }
-    private float GetAnimCurrentTime()
+    public float GetAnimCurrentTime()
     {
         AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
         return stateInfo.normalizedTime > 1 ? 1 : stateInfo.normalizedTime;
     }
-    private void SetCamera()
+    public void SetCamera()
     {
         CameraManager.Instance.AssignTarget(transform);
         CameraManager.Instance.ChangeCameraProps(CameraStates.OnFly);
     }
     private void OnDestroy()
     {
-        InputManager.OnTouchMove -= OnTouchMove;
-        InputManager.OnTouchStart -= OnTouchStart;
-        InputManager.OnTouchEnd -= OnTouchEnd;
+
     }
 }

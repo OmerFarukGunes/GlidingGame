@@ -4,17 +4,23 @@ public class Constants
     public const string ROCKETMAN_TWEEN_ID = "RocketmanTweenID";
     public const string IDLE = "Idle";
 }
+public class TAGS
+{
+    public const string PLAYER = "Player";
+    public const string GROUND = "Ground";
+    public const string JUMPER = "Jumper";
+    public const string DOUBLE_JUMPER = "DoubleJumper";
+}
 public enum CameraStates
 {
     InStick,
     OnFly,
 }
-public enum PlayerStates
+public enum RocketmanStates
 {
     InStick,
-    Launched,
-    InGliding,
-    AfterGliding,
+    Fly,
+    Gliding,
     Fall,
 }
 public class StickAnimatorParams

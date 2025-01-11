@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: SO_Rocketman
   m_EditorClassIdentifier: 
   Gravity: -9.81
-  LaunchPowerMultiplier: 10
+  LaunchPowerMultiplier: 35
+  JumperPower: 30
+  BounceDamping: 0.5
+  MinBounceSpeed: 1
+  ForwardSpeedMultiplier: 6
+  GlideForwardSpeed: 30
   RotationSpeed: 720
-  ForwardSpeed: 10
-  GlideSpeed: 0.5
-  GlideGravity: -1
+  GlideSwipeSpeed: 0.1
+  GlideGravity: -1.5

@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4545b61b816d69e439254346bc4ce7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rocketmanParent: {fileID: 3891058865155145404}
 --- !u!1 &365355355998261243
 GameObject:
   m_ObjectHideFlags: 0

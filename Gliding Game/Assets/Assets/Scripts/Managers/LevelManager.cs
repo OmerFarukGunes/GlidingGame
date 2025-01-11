@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,12 +19,9 @@ public class LevelManager : Singleton<LevelManager>
     }
     private void InitGrounds()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
-            var ground = PoolManager.Instance.Spawn(PoolObjectType.Ground, null);
-            ground.transform.position = Vector3.forward * mGroundCount * ground.transform.GetChild(0).localScale.z * 10; // Plane default width is 10
-            (ground as Ground).SpawnJumpers();
-            mGroundCount++;
+            SpawnGround();
         }
     }
     private IEnumerator LoadLevelAsync(string sceneName)
@@ -34,5 +32,12 @@ public class LevelManager : Singleton<LevelManager>
             yield return null;
 
         GameManager.LevelLoaded();
+    }
+    public void SpawnGround()
+    {
+        var ground = PoolManager.Instance.Spawn(PoolObjectType.Ground, null);
+        ground.transform.position = Vector3.forward * mGroundCount * ground.transform.GetChild(0).localScale.z * 10; // Plane default width is 10
+        (ground as Ground).SpawnJumpers();
+        mGroundCount++;
     }
 }

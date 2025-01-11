@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c0f3eecac25136149a8a7cd8e1ca5c17, type: 2}
+    - target: {fileID: 4798449802902917114, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
+      propertyPath: m_TagString
+      value: DoubleJumper
+      objectReference: {fileID: 0}
     - target: {fileID: 5459092211817090793, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1
@@ -30,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6086010080651237090, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
       propertyPath: m_TagString
-      value: DoubleJumper
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6589513986671717267, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
       propertyPath: m_Mesh

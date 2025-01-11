@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
     public static event Action OnLevelLoaded;
     public static event Action OnLevelRestarted;
     public static event Action<float> OnLaunched;
+    public static event Func<Transform> OnGetRocketmanParent;
 
     [SerializeField] private Transform managers;
     protected override void Awake()
@@ -23,4 +24,8 @@ public class GameManager : Singleton<GameManager>
     public static void LevelFailed() => OnLevelFailed?.Invoke();
     public static void LevelRestarted() => OnLevelRestarted?.Invoke();
     public static void Launch(float pullAmount) => OnLaunched?.Invoke(pullAmount);
+    public static Transform GetRocketmanParent()
+    {
+        return OnGetRocketmanParent?.Invoke();
+    }
 }
