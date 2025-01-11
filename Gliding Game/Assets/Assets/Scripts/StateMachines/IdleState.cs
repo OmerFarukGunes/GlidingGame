@@ -22,6 +22,7 @@ public class IdleState : IState
         mRocketman.Animator.SetTrigger(Constants.IDLE);
 
         mRocketman.CanRotate = true;
+        mRocketman.Collider.enabled = true;
     }
     public void Execute()
     {

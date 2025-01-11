@@ -21,6 +21,12 @@ public class GlidingState : IState
         DOTween.Kill(Constants.ROCKETMAN_TWEEN_ID);
 
         mRocketman.Animator.Play("Anim_OpenWings", 0, 1 - mRocketman.GetAnimCurrentTime());
+
+        mRocketman.TrailRenderers.ForEach(r =>
+        {
+            r.time = .25f;
+            r.enabled = true;
+        });
     }
     public void Execute()
     {
@@ -30,6 +36,13 @@ public class GlidingState : IState
     {
         InputManager.OnTouchEnd -= OnTouchEnd;
         InputManager.OnTouchMove -= OnTouchMove;
+
+        mRocketman.TrailRenderers.ForEach(r =>
+        {
+            r.enabled = false;
+            r.time = 0;
+            r.Clear();
+        });
     }
     private void OnTouchEnd(Vector3 deltaPos)
     {
@@ -38,7 +51,7 @@ public class GlidingState : IState
         mRocketman.Animator.Play("Anim_CloseWings", 0, 1 - mRocketman.GetAnimCurrentTime());
 
         mRocketman.CanRotate = false;
-        mRocketman.transform.DORotate(new Vector3(60, 0, 0), .1f).OnComplete(() => mRocketman.CanRotate = true).SetId(Constants.ROCKETMAN_TWEEN_ID);
+        mRocketman.transform.DORotate(new Vector3(90, 0, 0), .1f).OnComplete(() => mRocketman.CanRotate = true).SetId(Constants.ROCKETMAN_TWEEN_ID);
 
         mStatemachine.ChangeStateTo(RocketmanStates.Fly);
     }
@@ -47,9 +60,9 @@ public class GlidingState : IState
         Vector3 deltaPos = touchpos - mRocketman.LastTouchPos;
         Vector3 displacement = new Vector3(deltaPos.x * mRocketman.RocketmanData.GlideSwipeSpeed, mRocketman.RocketmanData.GlideGravity, mRocketman.Velocity.z);
         mRocketman.transform.position += displacement * Time.deltaTime;
+        float clampedRotation = Mathf.Clamp(displacement.x, -30, 30);
 
-        float clampedRotation = Mathf.Clamp(mRocketman.transform.rotation.z - displacement.x, -30, 30);
-        Quaternion rotation = Quaternion.Euler(60, 0, clampedRotation);
+        Quaternion rotation = Quaternion.Euler(Mathf.Clamp(90+clampedRotation,60,120), 90, 90);
         mRocketman.transform.rotation = Quaternion.Lerp(mRocketman.transform.rotation, rotation, Time.deltaTime * 5);
     }
 }

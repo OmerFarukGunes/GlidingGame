@@ -20,21 +20,20 @@ public class FallState : IState
 
     public void Execute()
     {
-        if (mRocketman.transform.position.y <= 0)
-            return;
-
-        mStatemachine.GetRocketman().Velocity.y += mStatemachine.GetRocketman().RocketmanData.Gravity * Time.deltaTime;
-        mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
-
         if (mRocketman.Velocity.magnitude < mRocketman.RocketmanData.MinBounceSpeed)
         {
+            mRocketman.Collider.enabled = false;
             mRocketman.Velocity = Vector3.zero;
+            return;
         }
         else if (mRocketman.CanRotate)
         {
             mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * 20  * Time.deltaTime, Space.Self);
             mRocketman.Velocity -= mRocketman.Velocity * .1f * Time.deltaTime;
         }
+
+        mStatemachine.GetRocketman().Velocity.y += mStatemachine.GetRocketman().RocketmanData.Gravity * Time.deltaTime;
+        mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
     }
 
     public void Exit()

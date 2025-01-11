@@ -11,6 +11,10 @@ public class TAGS
     public const string JUMPER = "Jumper";
     public const string DOUBLE_JUMPER = "DoubleJumper";
 }
+public class SaveKeys
+{
+    public const string BEST_SCORE = "BestScore";
+}
 public enum CameraStates
 {
     InStick,

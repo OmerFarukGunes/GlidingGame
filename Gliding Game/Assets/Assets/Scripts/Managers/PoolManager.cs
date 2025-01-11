@@ -130,4 +130,5 @@ public enum PoolObjectType
     Ground = 0,
     Jumper = 1,
     DoubleJumper = 2,
+    SmokeVFX = 3,
 }
