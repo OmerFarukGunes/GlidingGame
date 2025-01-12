@@ -20,4 +20,9 @@ public static class Utilities
         Velocity.y = velocity.y;
         transform.position += Velocity * Time.deltaTime;
     }
+    public static void ResetRigidbody(this Rigidbody rb)
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
 }

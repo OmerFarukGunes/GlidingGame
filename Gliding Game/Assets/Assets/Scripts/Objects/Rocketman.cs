@@ -56,8 +56,7 @@ public class Rocketman : CustomBehaviour
                 HitJumper(RocketmanData.JumperPower);
             }
         }
-        Rigidbody.velocity = Vector3.zero;
-        Rigidbody.angularVelocity = Vector3.zero;
+        Rigidbody.ResetRigidbody();
     }
     private void AfterHitCollision(RocketmanStates state)
     {
