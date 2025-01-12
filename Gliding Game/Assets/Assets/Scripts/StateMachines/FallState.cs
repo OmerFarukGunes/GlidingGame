@@ -14,7 +14,6 @@ public class FallState : IState
         GameManager.LevelFailed();
         GameManager.OnLevelRestarted += OnLevelRestarted;
         mRocketman.ChildAnimator.SetTrigger(Constants.IDLE);
-        mRocketman.Rigidbody.ResetRigidbody();
     }
     public void Execute()
     {

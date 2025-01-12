@@ -11,14 +11,18 @@ public class IdleState : IState
     public void Enter()
     {
         GameManager.OnLaunched += mRocketman.OnLaunched;
+
         mRocketman.transform.parent = GameManager.GetRocketmanParent();
         mRocketman.transform.localPosition = Vector3.zero;
         mRocketman.transform.localEulerAngles = Vector3.zero;
         mRocketman.RocketmanTransform.localEulerAngles = Vector3.zero;
+
         mRocketman.ChildAnimator.SetTrigger(Constants.IDLE);
 
         mRocketman.CanRotate = true;
         mRocketman.Collider.enabled = true;
+
+        mRocketman.Rigidbody.ResetRigidbody();
     }
     public void Execute()
     {
