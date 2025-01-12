@@ -8,5 +8,6 @@ public class Jumper : PoolObject
     {
         int horizontalScale = Random.Range(10, 25);
         transform.localScale = new Vector3(horizontalScale, Random.Range(10, 25), horizontalScale);
+        ChildCollider.enabled = true;
     }
 }

@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: PoolType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3531778459734344377, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
+      propertyPath: m_TagString
+      value: JumperAround
+      objectReference: {fileID: 0}
     - target: {fileID: 4408832429741081142, guid: 5011722c33aa4a543b8e9976af11626d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

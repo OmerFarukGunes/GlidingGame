@@ -36,7 +36,12 @@ public class Rocketman : CustomBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
-        if (collision.transform.CompareTag(TAGS.GROUND))
+        if (collision.transform.CompareTag(TAGS.JUMPER_AROUND))
+        {
+            collision.transform.GetComponent<Collider>().enabled = false;
+            BounceOffGround(collision.contacts[0].normal);
+        }
+        else if (collision.transform.CompareTag(TAGS.GROUND))
         {
             BounceOffGround(collision.contacts[0].normal);
         }

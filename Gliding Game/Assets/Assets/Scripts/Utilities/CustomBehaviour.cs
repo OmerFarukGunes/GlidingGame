@@ -56,6 +56,19 @@ public class CustomBehaviour : MonoBehaviour
             }
             return mCollider;
         }
+    }    
+    
+    private Collider mChildCollider;
+    public Collider ChildCollider
+    {
+        get
+        {
+            if (mChildCollider == null)
+            {
+                mChildCollider = base.GetComponentInChildren<Collider>();
+            }
+            return mChildCollider;
+        }
     } 
 
     private CanvasGroup mCanvasGroup;

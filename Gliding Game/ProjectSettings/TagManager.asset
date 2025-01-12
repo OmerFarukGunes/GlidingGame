@@ -7,6 +7,7 @@ TagManager:
   - Jumper
   - Ground
   - DoubleJumper
+  - JumperAround
   layers:
   - Default
   - TransparentFX

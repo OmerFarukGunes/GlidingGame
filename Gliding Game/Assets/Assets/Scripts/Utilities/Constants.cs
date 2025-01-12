@@ -17,6 +17,7 @@ public class TAGS
     public const string PLAYER = "Player";
     public const string GROUND = "Ground";
     public const string JUMPER = "Jumper";
+    public const string JUMPER_AROUND = "JumperAround";
     public const string DOUBLE_JUMPER = "DoubleJumper";
 }
 public class SaveKeys
