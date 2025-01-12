@@ -17,7 +17,6 @@ public class GlidingState : IState
         mRocketman.Velocity.z = mRocketman.RocketmanData.GlideForwardSpeed;
         DOTween.Kill(Constants.ROCKETMAN_TWEEN_ID);
 
-        mRocketman.RocketmanTransform.localEulerAngles = new Vector3(90, 90, 90);
         mRocketman.ChildAnimator.Play(RocketmanAnimatorParams.OPEN_WINGS_NAME, 0, 1 - mRocketman.GetAnimCurrentTime());
 
         mRocketman.TrailRenderers.ForEach(r =>
