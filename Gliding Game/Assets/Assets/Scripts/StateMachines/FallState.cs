@@ -10,6 +10,7 @@ public class FallState : IState
     }
     public void Enter()
     {
+        CameraManager.Instance.AssignTarget(null);
         GameManager.LevelFailed();
         GameManager.OnLevelRestarted += OnLevelRestarted;
         mRocketman.ChildAnimator.SetTrigger(Constants.IDLE);
