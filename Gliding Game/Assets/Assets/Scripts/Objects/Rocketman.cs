@@ -39,21 +39,21 @@ public class Rocketman : CustomBehaviour
         if (collision.transform.CompareTag(TAGS.JUMPER_AROUND))
         {
             collision.transform.GetComponent<Collider>().enabled = false;
-            BounceOffGround(collision.contacts[0].normal);
+            BounceOfHit(collision.contacts[0].normal);
         }
         else if (collision.transform.CompareTag(TAGS.GROUND))
         {
-            BounceOffGround(collision.contacts[0].normal);
+            BounceOfHit(collision.contacts[0].normal);
         }
         else if (!StateMachine.CheckCurrentState(RocketmanStates.Fall))
         {
             if (collision.transform.CompareTag(TAGS.DOUBLE_JUMPER))
             {
-                HitJumper(Vector3.up, RocketmanData.JumperPower * 2);
+                HitJumper(RocketmanData.JumperPower * 2);
             }
             else if (collision.transform.CompareTag(TAGS.JUMPER))
             {
-                HitJumper(Vector3.up, RocketmanData.JumperPower);
+                HitJumper(RocketmanData.JumperPower);
             }
         }
         Rigidbody.velocity = Vector3.zero;
@@ -64,16 +64,17 @@ public class Rocketman : CustomBehaviour
         RotateAxis = Vector3.Cross(Velocity.normalized, Vector3.forward).normalized;
         StateMachine.ChangeStateTo(state);
     }
-    private void BounceOffGround(Vector3 collisionNormal)
+    private void BounceOfHit(Vector3 collisionNormal)
     {
         Vector3 bounceDirection = Vector3.Reflect(Velocity.normalized, collisionNormal);
-        Velocity = bounceDirection * Velocity.magnitude * RocketmanData.BounceDamping;
+        bounceDirection.y = Mathf.Abs(bounceDirection.y);
+        Velocity = bounceDirection * Velocity.z * RocketmanData.BounceDamping;
         AfterHitCollision(RocketmanStates.Fall);
     }
-    private void HitJumper(Vector3 direction, float power)
+    private void HitJumper(float power)
     {
         Velocity.y = 0;
-        Velocity += direction * power;
+        Velocity += Vector3.up * power;
         AfterHitCollision(RocketmanStates.Fly);
     }
     #endregion

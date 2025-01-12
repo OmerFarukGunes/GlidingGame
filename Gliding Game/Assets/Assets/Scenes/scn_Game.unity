@@ -497,6 +497,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ce5485860f0ba40b8296da5547ede4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  handTransform: {fileID: 0}
+  parentCanvas: {fileID: 2074357559}
+  cam: {fileID: 963194227}
 --- !u!1 &951326194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,9 +1007,9 @@ Canvas:
   m_GameObject: {fileID: 2074357556}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 963194227}
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

@@ -4,13 +4,13 @@ public class Constants
     public const string ROCKETMAN_TWEEN_ID = "RocketmanTweenID";
     public const string IDLE = "Idle";
 
-    public const int INIT_PLANE_COUNT = 5;
+    public const int INIT_PLANE_COUNT = 4;
     public const int MIN_JUMPER_COUNT = 25;
     public const int MAX_JUMPER_COUNT = 40;
 
     public const int PLANE_Z_SIZE_MULT = 10;
 
-    public const float MIN_Y_LIMIT = .5f;
+    public const float MIN_Y_LIMIT = .65f;
 }
 public class TAGS
 {

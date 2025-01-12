@@ -15,9 +15,8 @@ public static class Utilities
     }
     public static void MoveForward(this Transform transform, Vector3 velocity)
     {
-        Vector3 forwardDirection = transform.forward;
         Vector3 Velocity = Vector3.zero;
-        Velocity += forwardDirection * velocity.z;
+        Velocity += transform.forward * velocity.z;
         Velocity.y = velocity.y;
         transform.position += Velocity * Time.deltaTime;
     }

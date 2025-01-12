@@ -31,7 +31,7 @@ public class FallState : IState
         }
 
         mRocketman.Velocity.y += mRocketman.RocketmanData.Gravity * Time.deltaTime;
-        mRocketman.transform.MoveForward(mRocketman.Velocity);
+        mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
     }
 
     public void Exit()
