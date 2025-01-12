@@ -14,7 +14,7 @@ public class Ground : PoolObject
     }
     public void SpawnJumpers()
     {
-        int count = Random.Range(10, 15);
+        int count = Random.Range(Constants.MIN_JUMPER_COUNT, Constants.MAX_JUMPER_COUNT);
         System.Random random = new System.Random();
         var selectedPointList = randomPointGenerator.PositionList.OrderBy(x => random.Next()).Take(count);
         foreach (var point in selectedPointList)

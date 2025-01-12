@@ -4,9 +4,11 @@ public class Rocketman : CustomBehaviour
 {
     [HideInInspector] public bool CanRotate;
     [HideInInspector] public Vector3 Velocity;
+
+    public Transform RocketmanTransform;
     public List<TrailRenderer> TrailRenderers;
-    public Vector3 LastTouchPos{ get; private set; }
-    public Vector3 RotateAxis{ get; private set; }
+    public Vector3 LastTouchPos { get; private set; }
+    public Vector3 RotateAxis { get; private set; }
     public StateMachine StateMachine { get; private set; }
     public RocketmanData RocketmanData;
     public override void Initialize()
@@ -14,8 +16,23 @@ public class Rocketman : CustomBehaviour
         base.Initialize();
         StateMachine = new StateMachine(this);
         PlayerManager.Instance.Rocketman = this;
-
     }
+    private void Update()
+    {
+        StateMachine.Execute();
+    }
+    public void SetCamera()
+    {
+        CameraManager.Instance.AssignTarget(transform);
+        CameraManager.Instance.ChangeCameraProps(CameraStates.OnFly);
+    }
+    public float GetAnimCurrentTime()
+    {
+        AnimatorStateInfo stateInfo = ChildAnimator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.normalizedTime > 1 ? 1 : stateInfo.normalizedTime;
+    }
+
+    #region Collision Behaviours
     private void OnCollisionEnter(Collision collision)
     {
         PoolManager.Instance.Spawn(PoolObjectType.SmokeVFX, null).transform.position = collision.contacts[0].point;
@@ -34,25 +51,29 @@ public class Rocketman : CustomBehaviour
                 HitJumper(Vector3.up, RocketmanData.JumperPower);
             }
         }
+        Rigidbody.velocity = Vector3.zero;
+        Rigidbody.angularVelocity = Vector3.zero;
+    }
+    private void AfterHitCollision(RocketmanStates state)
+    {
+        RotateAxis = Vector3.Cross(Velocity.normalized, Vector3.forward).normalized;
+        StateMachine.ChangeStateTo(state);
     }
     private void BounceOffGround(Vector3 collisionNormal)
     {
         Vector3 bounceDirection = Vector3.Reflect(Velocity.normalized, collisionNormal);
         Velocity = bounceDirection * Velocity.magnitude * RocketmanData.BounceDamping;
-        RotateAxis = Vector3.Cross(Velocity.normalized, Vector3.forward).normalized;
-        StateMachine.ChangeStateTo(RocketmanStates.Fall);
+        AfterHitCollision(RocketmanStates.Fall);
     }
     private void HitJumper(Vector3 direction, float power)
     {
         Velocity.y = 0;
         Velocity += direction * power;
-        RotateAxis = Vector3.Cross(Velocity.normalized, Vector3.forward).normalized;
-        StateMachine.ChangeStateTo(RocketmanStates.Fly);
+        AfterHitCollision(RocketmanStates.Fly);
     }
-    private void Update()
-    {
-        StateMachine.Execute();
-    }
+    #endregion
+
+    #region Actions 
     public void OnLaunched(float pullAmount)
     {
         SetCamera();
@@ -64,7 +85,7 @@ public class Rocketman : CustomBehaviour
         Vector3 avarageForward = (Vector3.forward + transform.forward).normalized;
         Velocity = avarageForward * power;
         Velocity.z = Mathf.Abs(Velocity.z * RocketmanData.ForwardSpeedMultiplier);
-
+        transform.forward = avarageForward;
         StateMachine.ChangeStateTo(RocketmanStates.Fly);
     }
     public void OnTouchStart(Vector3 touchPos)
@@ -72,14 +93,5 @@ public class Rocketman : CustomBehaviour
         LastTouchPos = touchPos;
         StateMachine.ChangeStateTo(RocketmanStates.Gliding);
     }
-    public float GetAnimCurrentTime()
-    {
-        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
-        return stateInfo.normalizedTime > 1 ? 1 : stateInfo.normalizedTime;
-    }
-    public void SetCamera()
-    {
-        CameraManager.Instance.AssignTarget(transform);
-        CameraManager.Instance.ChangeCameraProps(CameraStates.OnFly);
-    }
+    #endregion
 }

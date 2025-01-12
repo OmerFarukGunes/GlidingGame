@@ -18,6 +18,32 @@ public class CustomBehaviour : MonoBehaviour
             return mAnimator;
         }
     } 
+     
+    private Rigidbody mRigidbody;
+    public Rigidbody Rigidbody
+    {
+        get
+        {
+            if (mRigidbody == null)
+            {
+                mRigidbody = base.GetComponent<Rigidbody>();
+            }
+            return mRigidbody;
+        }
+    } 
+    
+    private Animator mChildAnimator;
+    public Animator ChildAnimator
+    {
+        get
+        {
+            if (mChildAnimator == null)
+            {
+                mChildAnimator = base.GetComponentInChildren<Animator>();
+            }
+            return mChildAnimator;
+        }
+    } 
 
     private Collider mCollider;
     public Collider Collider

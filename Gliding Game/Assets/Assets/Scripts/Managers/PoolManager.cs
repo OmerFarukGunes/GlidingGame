@@ -13,13 +13,11 @@ public class PoolManager : Singleton<PoolManager>
     {
         public GameObject Prefab;
     }
-
     public override void Initialize()
     {
         base.Initialize();
         InstantiatePool();
     }
-
     private void InstantiatePool()
     {
         mPool = DictionaryPool<PoolObjectType, IObjectPool<PoolObject>>.Get();
@@ -32,13 +30,10 @@ public class PoolManager : Singleton<PoolManager>
             }
         );
     }
-
     private void CreateObjectsPool<T>(PoolItem<T> item) where T : PoolObject
     {
         if (!item.Prefab)
-        {
             throw new Exception("Pool Item prefab is null");
-        }
 
         var type = item.Prefab.GetComponent<T>().PoolType;
 
@@ -55,20 +50,19 @@ public class PoolManager : Singleton<PoolManager>
             )
         );
     }
-
-
     private void InitializeObjectsPool<T>(PoolItem<T> item, int count) where T : PoolObject
     {
         if (!item.Prefab)
-        {
             throw new Exception("Pool Item prefab is null");
-        }
+
         var type = item.Prefab.GetComponent<T>().PoolType;
+
         if (!mPool.TryGetValue(type, out var objectPool))
         {
             CreateObjectsPool(item);
             objectPool = mPool[type];
         }
+
         for (var i = 0; i < count; ++i)
         {
             objectPool.Get();
@@ -78,7 +72,6 @@ public class PoolManager : Singleton<PoolManager>
     {
         GameObject go = Instantiate(prefab, Vector3.zero, Quaternion.identity, transform);
         go.name = prefab.name;
-
         var pooledGO = go.GetComponent<PoolObject>();
         return pooledGO;
     }
@@ -101,7 +94,6 @@ public class PoolManager : Singleton<PoolManager>
     {
         Destroy(destroyedGO.gameObject);
     }
-
     public PoolObject Spawn(PoolObjectType type, Transform parent = null)
     {
         if (mPool.TryGetValue(type, out var objectPool))
@@ -115,11 +107,8 @@ public class PoolManager : Singleton<PoolManager>
             return pooledGO;
         }
         else
-        {
             throw new Exception("Pool Type not found!");
-        }
     }
-
     public void DeSpawn(PoolObject pO)
     {
         mPool[pO.PoolType].Release(pO);

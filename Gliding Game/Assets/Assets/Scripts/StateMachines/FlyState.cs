@@ -18,10 +18,10 @@ public class FlyState : IState
     }
     private void Fly()
     {
-        mStatemachine.GetRocketman().Velocity.y += mStatemachine.GetRocketman().RocketmanData.Gravity * Time.deltaTime;
-        mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
-        if (mRocketman.CanRotate)
-            mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.RocketmanData.RotationSpeed * Time.deltaTime, Space.Self);
+        mRocketman.Velocity.y += mRocketman.RocketmanData.Gravity * Time.deltaTime;
+        mRocketman.transform.MoveForward(mRocketman.Velocity);
+
+        mRocketman.RocketmanTransform.Rotate(mRocketman.RotateAxis, mRocketman.RocketmanData.RotationSpeed * Time.deltaTime, Space.Self);
     }
     public void Exit()
     {

@@ -12,7 +12,9 @@ public class FallState : IState
     {
         GameManager.LevelFailed();
         GameManager.OnLevelRestarted += OnLevelRestarted;
-        mRocketman.Animator.SetTrigger(Constants.IDLE);
+        mRocketman.ChildAnimator.SetTrigger(Constants.IDLE);
+        mRocketman.Rigidbody.velocity = Vector3.zero;
+        mRocketman.Rigidbody.angularVelocity = Vector3.zero;
     }
     public void Execute()
     {
@@ -24,12 +26,12 @@ public class FallState : IState
         }
         else if (mRocketman.CanRotate)
         {
-            mRocketman.transform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * mRocketman.RocketmanData.FallRotationSpeed  * Time.deltaTime, Space.Self);
+            mRocketman.RocketmanTransform.Rotate(mRocketman.RotateAxis, mRocketman.Velocity.magnitude * mRocketman.RocketmanData.FallRotationSpeed  * Time.deltaTime, Space.Self);
             mRocketman.Velocity -= mRocketman.Velocity * .1f * Time.deltaTime;
         }
 
-        mStatemachine.GetRocketman().Velocity.y += mStatemachine.GetRocketman().RocketmanData.Gravity * Time.deltaTime;
-        mRocketman.transform.position += mRocketman.Velocity * Time.deltaTime;
+        mRocketman.Velocity.y += mRocketman.RocketmanData.Gravity * Time.deltaTime;
+        mRocketman.transform.MoveForward(mRocketman.Velocity);
     }
 
     public void Exit()

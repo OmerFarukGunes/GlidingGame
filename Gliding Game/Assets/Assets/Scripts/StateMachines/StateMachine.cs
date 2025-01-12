@@ -46,8 +46,4 @@ public class StateMachine
     {
         mCurrentState.Exit();
     }
-    public Rocketman GetRocketman()
-    {
-        return mRocketman;
-    }
 }

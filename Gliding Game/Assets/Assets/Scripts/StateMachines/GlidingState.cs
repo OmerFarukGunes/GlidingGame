@@ -17,7 +17,8 @@ public class GlidingState : IState
         mRocketman.Velocity.z = mRocketman.RocketmanData.GlideForwardSpeed;
         DOTween.Kill(Constants.ROCKETMAN_TWEEN_ID);
 
-        mRocketman.Animator.Play("Anim_OpenWings", 0, 1 - mRocketman.GetAnimCurrentTime());
+        mRocketman.RocketmanTransform.localEulerAngles = new Vector3(90, 90, 90);
+        mRocketman.ChildAnimator.Play(RocketmanAnimatorParams.OPEN_WINGS_NAME, 0, 1 - mRocketman.GetAnimCurrentTime());
 
         mRocketman.TrailRenderers.ForEach(r =>
         {
@@ -31,7 +32,8 @@ public class GlidingState : IState
     }
     public void Exit()
     {
-        mRocketman.Animator.Play("Anim_CloseWings", 0, 1 - mRocketman.GetAnimCurrentTime());
+        mRocketman.RocketmanTransform.localEulerAngles = new Vector3(90, 0, 0);
+        mRocketman.ChildAnimator.Play(RocketmanAnimatorParams.CLOSE_WINGS_NAME, 0, 1 - mRocketman.GetAnimCurrentTime());
         InputManager.OnTouchEnd -= OnTouchEnd;
         InputManager.OnTouchMove -= OnTouchMove;
 
@@ -42,23 +44,35 @@ public class GlidingState : IState
             r.Clear();
         });
     }
+
+    #region Actions
     private void OnTouchEnd(Vector3 deltaPos)
     {
         mRocketman.Velocity.y = 0;
-
-        mRocketman.CanRotate = false;
-        mRocketman.transform.DORotate(new Vector3(90, 0, 0), .1f).OnComplete(() => mRocketman.CanRotate = true).SetId(Constants.ROCKETMAN_TWEEN_ID);
-
         mStatemachine.ChangeStateTo(RocketmanStates.Fly);
     }
     private void OnTouchMove(Vector3 touchpos)
     {
         Vector3 deltaPos = touchpos - mRocketman.LastTouchPos;
-        Vector3 displacement = new Vector3(deltaPos.x * mRocketman.RocketmanData.GlideSwipeSpeed, mRocketman.RocketmanData.GlideGravity, mRocketman.Velocity.z);
-        mRocketman.transform.position += displacement * Time.deltaTime;
 
-        float clampedRotation = Mathf.Clamp(displacement.x, -30, 30);
-        Quaternion rotation = Quaternion.Euler(Mathf.Clamp(90+clampedRotation,60,120), 90, 90);
+        float turnRotation = Mathf.Clamp(deltaPos.x * mRocketman.RocketmanData.GlideSwipeSpeed, -30, 30);
+
+        float currentY = NormalizeAngle(mRocketman.transform.eulerAngles.y);
+        Quaternion rotation = Quaternion.Euler(0, Mathf.Clamp(currentY + turnRotation, -70, 70), 0);
         mRocketman.transform.rotation = Quaternion.Lerp(mRocketman.transform.rotation, rotation, Time.deltaTime * 5);
+
+        Quaternion rotationChild = Quaternion.Euler(Mathf.Clamp(90 + turnRotation, 60, 120), 90, 90);
+        mRocketman.RocketmanTransform.localRotation = Quaternion.Lerp(mRocketman.RocketmanTransform.localRotation, rotationChild, Time.deltaTime * 5);
+
+        Vector3 Velocity = mRocketman.Velocity;
+        Velocity.y = mRocketman.RocketmanData.GlideGravity * Time.deltaTime;
+        mRocketman.transform.MoveForward(Velocity);
+    }
+    #endregion
+
+    private float NormalizeAngle(float angle)
+    {
+        if (angle > 180) angle -= 360;
+        return angle;
     }
 }

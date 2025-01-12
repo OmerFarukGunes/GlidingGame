@@ -8,6 +8,7 @@ public class HudPanel : UIPanel
     {
         base.Initialize();
         GameManager.OnLevelFailed += SetBestScore;
+        SetBestScore();
     }
     public override void ShowPanel()
     {

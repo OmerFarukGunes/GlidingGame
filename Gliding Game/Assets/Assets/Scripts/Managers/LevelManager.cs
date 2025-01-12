@@ -19,13 +19,6 @@ public class LevelManager : Singleton<LevelManager>
         StartCoroutine(LoadLevelAsync(sceneName));
         InitGrounds();
     }
-    private void InitGrounds()
-    {
-        for (int i = 0; i < Constants.INIT_PLANE_COUNT; i++)
-        {
-            SpawnGround();
-        }
-    }
     private IEnumerator LoadLevelAsync(string sceneName)
     {
         var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
@@ -34,6 +27,13 @@ public class LevelManager : Singleton<LevelManager>
             yield return null;
 
         GameManager.LevelLoaded();
+    }
+    private void InitGrounds()
+    {
+        for (int i = 0; i < Constants.INIT_PLANE_COUNT; i++)
+        {
+            SpawnGround();
+        }
     }
     public void RemoveGroundInList(Ground ground)
     {
@@ -44,7 +44,7 @@ public class LevelManager : Singleton<LevelManager>
     public void SpawnGround()
     {
         mGroundList.Add(PoolManager.Instance.Spawn(PoolObjectType.Ground, null) as Ground);
-        mGroundList[^1].transform.position = Vector3.forward * mGroundCount * mGroundList[^1].transform.GetChild(0).localScale.z * 10; // Plane default width is 10
+        mGroundList[^1].transform.position = Vector3.forward * mGroundCount * mGroundList[^1].transform.GetChild(0).localScale.z * Constants.PLANE_Z_SIZE_MULT;
         mGroundList[^1].SpawnJumpers();
         mGroundCount++;
     }
